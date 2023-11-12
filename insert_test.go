@@ -12,7 +12,7 @@ func TestInsert(t *testing.T) {
 	}
 
 	result := fmt.Sprintf("%v %v", stmt, args)
-	want := fmt.Sprintf("INSERT INTO example (Name,Id) (?,'?') [1 3]")
+	want := "INSERT INTO example (Name,Id) (?,'?') [1 3]"
 
 	if result != want {
 		t.Fatalf(`Insert("example").Columns("Name", "Id").Values(1, "3").ToSql() failed, want %s, got %s`, want, result)
@@ -24,13 +24,13 @@ func TestInsertSlice(t *testing.T) {
 	values := []interface{}{1, "3"}
 	stmt, args, err := Insert("example").Columns(columns...).Values(values...).ToSql()
 	if err != nil {
-		t.Fatalf(`Insert("example").Columns("Name", "Id").Values(1, "3").ToSql() - %v`, err)
+		t.Fatalf(`Insert("example").Columns(columns...).Values(values...).ToSql() - %v`, err)
 	}
 
 	result := fmt.Sprintf("%v %v", stmt, args)
-	want := fmt.Sprintf("INSERT INTO example (Name,Id) (?,'?') [1 3]")
+	want := "INSERT INTO example (Name,Id) (?,'?') [1 3]"
 
 	if result != want {
-		t.Fatalf(`Insert("example").Columns("Name", "Id").Values(1, "3").ToSql() failed, want %s, got %s`, want, result)
+		t.Fatalf(`Insert("example").Columns(columns...).Values(values...).ToSql() failed, want %s, got %s`, want, result)
 	}
 }
