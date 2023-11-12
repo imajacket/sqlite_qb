@@ -48,6 +48,25 @@ func toSQL(data map[string]string) (string, []interface{}, error) {
 		return paramed, args, nil
 	}
 
+	ins, insOk := data["insert"]
+	if insOk {
+		columns, ok := data["columns"]
+		if ok {
+			fullStmt = fmt.Sprintf("%s %s %s", ins, columns, data["values"])
+		} else {
+			fullStmt = fmt.Sprintf("%s %s", ins, data["values"])
+		}
+
+		// Parameterize
+		paramed := parameterize.ReplaceAllStringFunc(fullStmt, replacer)
+
+		if strings.Contains(paramed, "ʭ") {
+			return "", nil, errors.New("illegal character")
+		}
+
+		return paramed, args, nil
+	}
+
 	return "", nil, nil
 }
 
